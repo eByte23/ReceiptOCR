@@ -30,12 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Magick.NET-AnyCPU">
-      <HintPath>..\packages\Magick.NET-Q8-AnyCPU.7.0.0.0014\lib\net40-client\Magick.NET-AnyCPU.dll</HintPath>
-    </Reference>
-    <Reference Include="Magick.NET.Core">
-      <HintPath>..\packages\Magick.NET-Q8-AnyCPU.7.0.0.0014\lib\net40-client\Magick.NET.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />

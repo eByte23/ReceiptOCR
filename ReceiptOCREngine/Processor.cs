@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using Tesseract;
+using Tesseract.Interop;
 
 
 namespace ReceiptOCREngine
@@ -24,12 +25,22 @@ namespace ReceiptOCREngine
         public static OcrData RunOCR(Bitmap inputImage, OcrPageMode pageSegMode)
         {
             OcrData OcrData1 = new OcrData();
-            using (var ocrEngine = new TesseractEngine(@"./tessdata", "eng", EngineMode.TesseractAndCube))
+            using (var ocrEngine = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default))
             {
-                using (var ocrPage = ocrEngine.Process(inputImage,ReturnPageMode(pageSegMode)))
+                BitmapToPixConverter b2p = new BitmapToPixConverter();
+                Pix nPic = b2p.Convert(inputImage);
+                nPic = nPic.ConvertRGBToGray(255, 255, 255);
+                //nPic.BinarizeSauvola(120, (float)0.35, false);
+                
+
+                using (var ocrPage = ocrEngine.Process(nPic,ReturnPageMode(pageSegMode)))
                 {
+                    ocrPage.AnalyseLayout();
+
+                    ocrPage.GetThresholdedImage().Save(@"D:\\ocrd_image.jpg", ImageFormat.Default);
                     OcrData1.ReadText = ocrPage.GetText();
-                    OcrData1.LineConfidence = (int)ocrPage.GetMeanConfidence();                    
+                    OcrData1.LineConfidence = (int)ocrPage.GetMeanConfidence();
+                    
                 }
 
             }

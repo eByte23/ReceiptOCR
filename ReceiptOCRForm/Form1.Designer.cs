@@ -54,6 +54,7 @@
             this.contrastChk = new System.Windows.Forms.CheckBox();
             this.enhanceChk = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.optionsPanel.SuspendLayout();
@@ -71,7 +72,7 @@
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox1.Location = new System.Drawing.Point(27, 26);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(372, 48);
+            this.pictureBox1.Size = new System.Drawing.Size(372, 536);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
@@ -82,7 +83,7 @@
             this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox2.Location = new System.Drawing.Point(444, 26);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(390, 48);
+            this.pictureBox2.Size = new System.Drawing.Size(390, 536);
             this.pictureBox2.TabIndex = 1;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
@@ -135,6 +136,7 @@
             // 
             // optionsPanel
             // 
+            this.optionsPanel.Controls.Add(this.textBox1);
             this.optionsPanel.Controls.Add(this.medianInt);
             this.optionsPanel.Controls.Add(this.medianChk);
             this.optionsPanel.Controls.Add(this.invertChk);
@@ -345,6 +347,13 @@
             this.panel1.Size = new System.Drawing.Size(852, 861);
             this.panel1.TabIndex = 8;
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(182, 56);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 23;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -399,6 +408,7 @@
         private System.Windows.Forms.CheckBox invertChk;
         private System.Windows.Forms.CheckBox medianChk;
         private System.Windows.Forms.NumericUpDown medianInt;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
