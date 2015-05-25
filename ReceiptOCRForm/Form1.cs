@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using ImageMagick;
 using System.Drawing.Imaging;
 using ReceiptOCREngine;
+using Emgu;
+using Emgu.Util;
 
 namespace ReceiptOCRForm
 {
@@ -19,7 +21,7 @@ namespace ReceiptOCRForm
         private string origFile { get;set;}
         private Bitmap origImg;
         private Bitmap imgForScanning;
-        private bool wtThreshold, enhance, contrast, autoGamma, autoOrient, autoLevel,despeckle, sharpen,invert, medianFilter;
+        private bool wtThreshold, enhance, contrast, autoGamma, autoOrient, autoLevel,despeckle, sharpen,invert, medianFilter,unsharpmask;
         public Form1()
         {
             InitializeComponent();
@@ -43,16 +45,17 @@ namespace ReceiptOCRForm
                     imageStreamSource.Close();
                     MagickImage img = new MagickImage(memstream.ToArray());
                    // img.Grayscale(PixelIntensityMethod.Average);
-                    
-                    
 
+                    
+                    
                     origImg = img.ToBitmap();
-                    optionsPanel.Enabled = true;
+                   
 
                 }
 
                 pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
-                pictureBox1.BackgroundImage = origImg;                
+                pictureBox1.BackgroundImage = origImg;         
+               
             }
             else
             {
@@ -166,6 +169,14 @@ namespace ReceiptOCRForm
                             this.invert = false;
                         break;
                     }
+                case "UnsharpmaskChk":
+                    {
+                        if (senderChkbx.Checked)
+                            this.unsharpmask = true;
+                        else
+                            this.unsharpmask = false;
+                        break;
+                    }
                 case "medianChk":
                     {
                         if (senderChkbx.Checked)
@@ -193,47 +204,18 @@ namespace ReceiptOCRForm
         {
             using (MemoryStream memstream = new MemoryStream())
             {
-                imgInput.Save(memstream, ImageFormat.Jpeg);
+                imgInput.Save(memstream, ImageFormat.Tiff);
                 MagickImage img = new MagickImage(memstream.ToArray());
 
-                //basic options
 
-                //img.ColorFuzz = 2;
-                //img.FillColor =(Color.Black);
-                //MagickGeometry geo = new MagickGeometry(0,0);
-                //img.FloodFill(img, 0, 0, Color.White);
-                //img.Alpha(AlphaOption.Off);
-                //img.Threshold((Percentage)50);
-                //img.Morphology(MorphologyMethod.HitAndMiss, Kernel.Undefined, "3x3:-,0,-,0,1,0,-,0,-", Channels.All, 10);
-                //img.Threshold((Percentage)50);
-                //img.Depth = 8;
-                
-                //////////////
-
-                if (wtThreshold)
+                if (sharpen)
                 {
-                    //img.WhiteThreshold((int)wtThresInt.Value);
-                    img.ReduceNoise();
-                    //img.TransformSkewX(2);
-                    //img.TransformSkewY(2);
+                    img.Sharpen((int)sharpenIntX.Value, (int)sharpenIntY.Value, Channels.All);
                 }
 
-                if (invert)
+                if (autoGamma)
                 {
-                   // img.Equalize();
-                    //img.Flop();  horisontal image flip                   
-                    //img.MedianFilter(2);
-                    img.Negate();
-                }
-
-                if (medianFilter)
-                {
-                    img.MedianFilter((int)medianInt.Value);
-                }
-
-                if (autoLevel)
-                {
-                    img.AutoLevel();
+                    img.AutoGamma();
                 }
 
                 if (enhance)
@@ -246,24 +228,14 @@ namespace ReceiptOCRForm
                     img.Contrast();
                 }
 
-                if (autoGamma)
+                if (autoLevel)
                 {
-                    img.AutoGamma();
+                    img.AutoLevel();
                 }
 
                 if (autoOrient)
-                {                    
-                    img.AutoOrient();
-                    //img.Grayscale(PixelIntensityMethod.Average);
-                    //MagickGeometry geo = new MagickGeometry(2191,4000);
-                    //img.Scale(geo);
-                    img.Scale((Percentage)300, (Percentage)300);
-                    img.Unsharpmask(6.8, 2.69, 2.69, 0);
-                    img.BackgroundColor = Color.White;
-                    //img.BlackPointCompensation = true;
-                    //img.
-                    //img.Deskew(10);
-                    img.ReduceNoise(3);
+                {
+                    img.AutoOrient();                   
                 }
 
                 if (despeckle)
@@ -271,10 +243,29 @@ namespace ReceiptOCRForm
                     img.Despeckle();
                 }
 
-                if (sharpen)
+
+                if (medianFilter)
                 {
-                    img.Sharpen((int)sharpenIntX.Value, (int)sharpenIntY.Value,Channels.All);
+                    img.MedianFilter((int)medianInt.Value);
                 }
+
+                if (unsharpmask)
+                {
+                    img.Unsharpmask(6.8, 4, 4,0);
+                }
+
+                if (wtThreshold)
+                {
+                    img.LinearStretch((float)0.9, 0.1);
+                    //img.WhiteThreshold((int)wtThresInt.Value);
+                    //img.ReduceNoise();
+                    //img.Grayscale(PixelIntensityMethod.Brightness);
+                }
+
+                if (invert)
+                {
+                    img.Negate();
+                }             
 
                 return img.ToBitmap();
             }           
@@ -289,34 +280,56 @@ namespace ReceiptOCRForm
 
         private void button2_Click(object sender, EventArgs e)
         {
-           
-                button2.Enabled =false;
-                var tx = button2.Text ;
-                button2.Text = "Reading...";
-               OcrData OcrData1 = Processor.RunOCR(imgForScanning, OcrPageMode.Auto);
-               richTextBox1.Text = OcrData1.ReadText;                
-                 button2.Enabled =true;
-                 button2.Text = tx;
 
-               Stream imageStreamSource = new FileStream(@"D:\\ocrd_image.jpg", FileMode.Open, FileAccess.Read, FileShare.Read);
-                using (MemoryStream memstream = new MemoryStream())
-                {
+            button2.Enabled = false;
+            var tx = button2.Text;
+            button2.Text = "Reading...";
+            Bitmap imgFor = processImgForScanning(origImg);
+            OcrData OcrData1 = Processor.RunOCR(imgFor, OcrPageMode.SingleBlock);
+            richTextBox1.Text = OcrData1.ReadText;
+            button2.Enabled = true;
+            button2.Text = tx;
 
-                    memstream.SetLength(imageStreamSource.Length);
-                    imageStreamSource.Read(memstream.GetBuffer(), 0, (int)imageStreamSource.Length);
-                    imageStreamSource.Close();
-                    pictureBox2.BackgroundImage = Bitmap.FromStream(memstream);
-                }
+            //Stream imageStreamSource = new FileStream(@"D:\\ocrd_image.jpg", FileMode.Open, FileAccess.Read, FileShare.Read);
+            // using (MemoryStream memstream = new MemoryStream())
+            //{
+            //    memstream.SetLength(imageStreamSource.Length);
+            //    imageStreamSource.Read(memstream.GetBuffer(), 0, (int)imageStreamSource.Length);
+            //    imageStreamSource.Close();
+            //    pictureBox2.BackgroundImage = Bitmap.FromStream(memstream);
+            //}
 
-                       
-                       
+            pictureBox2.BackgroundImage = Crop(imgFor,OcrData1.TargetArea.X1, OcrData1.TargetArea.Y1, OcrData1.TargetArea.Width, OcrData1.TargetArea.Height);
+
             //GetSlices(origImg);
-                // Bitmap imgI = (Bitmap)pictureBox2.BackgroundImage;
+            // Bitmap imgI = (Bitmap)pictureBox2.BackgroundImage;
             //imgI =FixBG(imgI);
             //DetectColorWithUnsafeParallel(imgI, 255, 255, 255,(byte)int.Parse(textBox1.Text));
-           // pictureBox2.BackgroundImage = imgI;
+            // pictureBox2.BackgroundImage = imgI;
 
         }
+
+        public Bitmap CropImage(Bitmap InputImg,int X1, int Y1, int X2, int Y2,int Height,int Width)
+        {   MagickImage img;
+            using (MemoryStream memstream = new MemoryStream())
+            {
+                InputImg.Save(memstream, ImageFormat.Jpeg);
+                img= new MagickImage(memstream.ToArray());
+                memstream.Close();
+            }
+            
+            //cvinvole
+
+            return (Bitmap)InputImg;            
+        }
+
+        public Bitmap Crop(Bitmap bm, int cropX, int cropY, int cropWidth, int cropHeight)
+        {
+            var rect = new System.Drawing.Rectangle(cropX, cropY, cropWidth, cropHeight);
+            return bm.Clone(rect, bm.PixelFormat);
+        }
+
+
 
         private void button1_Click(object sender, EventArgs e)
         {

@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Tesseract;
 using Tesseract.Interop;
+using System.Text.RegularExpressions;
 
 
 namespace ReceiptOCREngine
@@ -17,8 +18,33 @@ namespace ReceiptOCREngine
         public string ReadText { get; set; }
         public string IterationName { get; set; }
         public int IterationCount { get; set; }
+        public ROI TargetArea { get; set; }
         public decimal LineConfidence { get; set; }
         public int Count { get { return ReadText.Length; } }
+    }
+
+    public class Line
+    {
+        public List<Word> Words {get;set;}
+        public char WordSeparator{get;set;}
+
+    }
+
+    public class Word
+    {
+        public string Value {get;set;}
+        public char[] Characters{get;set;}        
+        public float CorrectConfidence{get;set;}
+    }
+
+    public class ROI
+    {
+        public int X1 = 0;
+        public int Y1 = 0;
+        public int X2 = 0;
+        public int Y2 = 0;
+        public int Height = 0;
+        public int Width = 0;
     }
     public class Processor
     {
@@ -27,97 +53,51 @@ namespace ReceiptOCREngine
             OcrData OcrData1 = new OcrData();
             using (var ocrEngine = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default))
             {
-                BitmapToPixConverter b2p = new BitmapToPixConverter();
-                Pix nPic = b2p.Convert(inputImage);
-                nPic = nPic.ConvertRGBToGray(255, 255, 255);
+                ocrEngine.SetVariable("tessedit_char_whitelist", @"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz$/.&");
+                ////ocrEngine.SetVariable("language_model_penalty_non_freq_dict_word", "0");
+                ////ocrEngine.SetVariable("language_model_penalty_non_dict_word", "0");
+                ////ocrEngine.SetVariable("tessedit_char_blacklist", "");
+                ////ocrEngine.SetVariable("classify_bln_numeric_mode", "1");
+                //BitmapToPixConverter b2p = new BitmapToPixConverter();
+                //Pix nPic = b2p.Convert(inputImage);
+                //nPic = nPic.ConvertRGBToGray(255, 255, 255);
                 //nPic.BinarizeSauvola(120, (float)0.35, false);
                 
 
-                using (var ocrPage = ocrEngine.Process(nPic,ReturnPageMode(pageSegMode)))
+                using (var ocrPage = ocrEngine.Process(inputImage,(PageSegMode)pageSegMode))
                 {
-                    ocrPage.AnalyseLayout();
+                    //ocrPage.AnalyseLayout();
 
-                    ocrPage.GetThresholdedImage().Save(@"D:\\ocrd_image.jpg", ImageFormat.Default);
+                    //ocrPage.GetThresholdedImage().Save(@"D:\\ocrd_image.jpg", ImageFormat.Default);
+                    ROI OcrRoi = new ROI();
+                    OcrRoi.X1 = ocrPage.RegionOfInterest.X1;
+                    OcrRoi.Y1 = ocrPage.RegionOfInterest.Y1;
+                    OcrRoi.X2 = ocrPage.RegionOfInterest.X2;
+                    OcrRoi.Y2 = ocrPage.RegionOfInterest.Y2;
+                    OcrRoi.Height = ocrPage.RegionOfInterest.Height;
+                    OcrRoi.Width = ocrPage.RegionOfInterest.Width;
                     OcrData1.ReadText = ocrPage.GetText();
                     OcrData1.LineConfidence = (int)ocrPage.GetMeanConfidence();
+                    
                     
                 }
 
             }
             return OcrData1;
-        }
+        }                
 
-        public static PageSegMode ReturnPageMode(OcrPageMode pgMode)
+        public static string SanatizeLine(string InputLine)
         {
-            //var var1 = Enum.GetName(typeof(PageSegMode), pgMode);
-            //return (PageSegMode)var1;
+            Regex rg = new Regex(@"\.\\/",RegexOptions.Singleline);
+            var CleanLine = rg.Replace(InputLine, string.Empty);
 
-            PageSegMode returnValue = PageSegMode.Auto;
-            switch ((int)pgMode)
-            {
-                case 0:
-                    {
-                        returnValue = PageSegMode.OsdOnly;
-                        break;
-                    }
-                case 1:
-                    {
-                        returnValue = PageSegMode.AutoOsd;
-                        break;
-                    }
-                case 2:
-                    {
-                        returnValue = PageSegMode.AutoOnly;
-                        break;
-                    }
-                case 3:
-                    {
-                        returnValue = PageSegMode.Auto;
-                        break;
-                    }
-                case 4:
-                    {
-                        returnValue = PageSegMode.SingleColumn;
-                        break;
-                    }
-                case 5:
-                    {
-                        returnValue = PageSegMode.SingleBlockVertText;
-                        break;
-                    }
-                case 6:
-                    {
-                        returnValue = PageSegMode.SingleBlock;
-                        break;
-                    }
-                case 7:
-                    {
-                        returnValue = PageSegMode.SingleLine;
-                        break;
-                    }
-                case 8:
-                    {
-                        returnValue = PageSegMode.SingleWord;
-                        break;
-                    }
-                case 9:
-                    {
-                        returnValue = PageSegMode.CircleWord;
-                        break;
-                    }
-                case 10:
-                    {
-                        returnValue = PageSegMode.SingleChar;
-                        break;
-                    }
-                case 11:
-                    {
-                        returnValue = PageSegMode.Count;
-                        break;
-                    }
-            }
-            return returnValue;
+            var rg1 = new Regex(@"  ", RegexOptions.Singleline);
+            CleanLine = rg1.Replace(CleanLine, " ");
+
+            return CleanLine;
         }
+
+        //public static char MostCommonChar() { }
     }
 
     

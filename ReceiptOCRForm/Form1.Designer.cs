@@ -35,7 +35,6 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.autoGammaChk = new System.Windows.Forms.CheckBox();
-            this.optionsPanel = new System.Windows.Forms.GroupBox();
             this.medianInt = new System.Windows.Forms.NumericUpDown();
             this.medianChk = new System.Windows.Forms.CheckBox();
             this.invertChk = new System.Windows.Forms.CheckBox();
@@ -54,15 +53,20 @@
             this.contrastChk = new System.Windows.Forms.CheckBox();
             this.enhanceChk = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.imageRenderSettings = new System.Windows.Forms.TabControl();
+            this.GeneralTab = new System.Windows.Forms.TabPage();
+            this.EnhanceTab = new System.Windows.Forms.TabPage();
+            this.UnsharpmaskChk = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.optionsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.medianInt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sharpenIntY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sharpenIntX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wtThresInt)).BeginInit();
             this.panel1.SuspendLayout();
+            this.imageRenderSettings.SuspendLayout();
+            this.GeneralTab.SuspendLayout();
+            this.EnhanceTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -126,7 +130,7 @@
             // autoGammaChk
             // 
             this.autoGammaChk.AutoSize = true;
-            this.autoGammaChk.Location = new System.Drawing.Point(19, 36);
+            this.autoGammaChk.Location = new System.Drawing.Point(6, 6);
             this.autoGammaChk.Name = "autoGammaChk";
             this.autoGammaChk.Size = new System.Drawing.Size(84, 17);
             this.autoGammaChk.TabIndex = 6;
@@ -134,39 +138,10 @@
             this.autoGammaChk.UseVisualStyleBackColor = true;
             this.autoGammaChk.CheckedChanged += new System.EventHandler(this.checkBoxes_CheckedChanged);
             // 
-            // optionsPanel
-            // 
-            this.optionsPanel.Controls.Add(this.textBox1);
-            this.optionsPanel.Controls.Add(this.medianInt);
-            this.optionsPanel.Controls.Add(this.medianChk);
-            this.optionsPanel.Controls.Add(this.invertChk);
-            this.optionsPanel.Controls.Add(this.autoLevelChk);
-            this.optionsPanel.Controls.Add(this.button2);
-            this.optionsPanel.Controls.Add(this.button1);
-            this.optionsPanel.Controls.Add(this.label5);
-            this.optionsPanel.Controls.Add(this.label4);
-            this.optionsPanel.Controls.Add(this.sharpenIntY);
-            this.optionsPanel.Controls.Add(this.sharpenIntX);
-            this.optionsPanel.Controls.Add(this.sharpenChk);
-            this.optionsPanel.Controls.Add(this.wtThresInt);
-            this.optionsPanel.Controls.Add(this.despeckleChk);
-            this.optionsPanel.Controls.Add(this.autoOrientChk);
-            this.optionsPanel.Controls.Add(this.wtThresholdChk);
-            this.optionsPanel.Controls.Add(this.contrastChk);
-            this.optionsPanel.Controls.Add(this.enhanceChk);
-            this.optionsPanel.Controls.Add(this.autoGammaChk);
-            this.optionsPanel.Enabled = false;
-            this.optionsPanel.Location = new System.Drawing.Point(903, 498);
-            this.optionsPanel.Name = "optionsPanel";
-            this.optionsPanel.Size = new System.Drawing.Size(302, 361);
-            this.optionsPanel.TabIndex = 7;
-            this.optionsPanel.TabStop = false;
-            this.optionsPanel.Text = "Image Prerender Options";
-            // 
             // medianInt
             // 
             this.medianInt.Enabled = false;
-            this.medianInt.Location = new System.Drawing.Point(157, 217);
+            this.medianInt.Location = new System.Drawing.Point(527, 582);
             this.medianInt.Name = "medianInt";
             this.medianInt.Size = new System.Drawing.Size(38, 20);
             this.medianInt.TabIndex = 22;
@@ -175,7 +150,7 @@
             // medianChk
             // 
             this.medianChk.AutoSize = true;
-            this.medianChk.Location = new System.Drawing.Point(19, 220);
+            this.medianChk.Location = new System.Drawing.Point(616, 629);
             this.medianChk.Name = "medianChk";
             this.medianChk.Size = new System.Drawing.Size(83, 17);
             this.medianChk.TabIndex = 21;
@@ -186,7 +161,7 @@
             // invertChk
             // 
             this.invertChk.AutoSize = true;
-            this.invertChk.Location = new System.Drawing.Point(19, 197);
+            this.invertChk.Location = new System.Drawing.Point(311, 629);
             this.invertChk.Name = "invertChk";
             this.invertChk.Size = new System.Drawing.Size(53, 17);
             this.invertChk.TabIndex = 20;
@@ -197,7 +172,7 @@
             // autoLevelChk
             // 
             this.autoLevelChk.AutoSize = true;
-            this.autoLevelChk.Location = new System.Drawing.Point(19, 151);
+            this.autoLevelChk.Location = new System.Drawing.Point(6, 77);
             this.autoLevelChk.Name = "autoLevelChk";
             this.autoLevelChk.Size = new System.Drawing.Size(74, 17);
             this.autoLevelChk.TabIndex = 19;
@@ -206,7 +181,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(100, 330);
+            this.button2.Location = new System.Drawing.Point(720, 744);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 18;
@@ -216,7 +191,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(19, 330);
+            this.button1.Location = new System.Drawing.Point(639, 744);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 17;
@@ -227,7 +202,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(203, 247);
+            this.label5.Location = new System.Drawing.Point(193, 120);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(12, 13);
             this.label5.TabIndex = 16;
@@ -236,7 +211,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(139, 247);
+            this.label4.Location = new System.Drawing.Point(129, 120);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(12, 13);
             this.label4.TabIndex = 15;
@@ -245,7 +220,7 @@
             // sharpenIntY
             // 
             this.sharpenIntY.Enabled = false;
-            this.sharpenIntY.Location = new System.Drawing.Point(221, 243);
+            this.sharpenIntY.Location = new System.Drawing.Point(211, 116);
             this.sharpenIntY.Name = "sharpenIntY";
             this.sharpenIntY.Size = new System.Drawing.Size(38, 20);
             this.sharpenIntY.TabIndex = 14;
@@ -254,7 +229,7 @@
             // sharpenIntX
             // 
             this.sharpenIntX.Enabled = false;
-            this.sharpenIntX.Location = new System.Drawing.Point(157, 243);
+            this.sharpenIntX.Location = new System.Drawing.Point(147, 116);
             this.sharpenIntX.Name = "sharpenIntX";
             this.sharpenIntX.Size = new System.Drawing.Size(38, 20);
             this.sharpenIntX.TabIndex = 13;
@@ -263,7 +238,7 @@
             // sharpenChk
             // 
             this.sharpenChk.AutoSize = true;
-            this.sharpenChk.Location = new System.Drawing.Point(19, 243);
+            this.sharpenChk.Location = new System.Drawing.Point(9, 116);
             this.sharpenChk.Name = "sharpenChk";
             this.sharpenChk.Size = new System.Drawing.Size(66, 17);
             this.sharpenChk.TabIndex = 12;
@@ -274,16 +249,16 @@
             // wtThresInt
             // 
             this.wtThresInt.Enabled = false;
-            this.wtThresInt.Location = new System.Drawing.Point(182, 105);
+            this.wtThresInt.Location = new System.Drawing.Point(571, 626);
             this.wtThresInt.Name = "wtThresInt";
-            this.wtThresInt.Size = new System.Drawing.Size(120, 20);
+            this.wtThresInt.Size = new System.Drawing.Size(39, 20);
             this.wtThresInt.TabIndex = 11;
             this.wtThresInt.ValueChanged += new System.EventHandler(this.ParamVal_ValueChanged);
             // 
             // despeckleChk
             // 
             this.despeckleChk.AutoSize = true;
-            this.despeckleChk.Location = new System.Drawing.Point(19, 174);
+            this.despeckleChk.Location = new System.Drawing.Point(423, 582);
             this.despeckleChk.Name = "despeckleChk";
             this.despeckleChk.Size = new System.Drawing.Size(77, 17);
             this.despeckleChk.TabIndex = 9;
@@ -294,7 +269,7 @@
             // autoOrientChk
             // 
             this.autoOrientChk.AutoSize = true;
-            this.autoOrientChk.Location = new System.Drawing.Point(19, 128);
+            this.autoOrientChk.Location = new System.Drawing.Point(6, 52);
             this.autoOrientChk.Name = "autoOrientChk";
             this.autoOrientChk.Size = new System.Drawing.Size(76, 17);
             this.autoOrientChk.TabIndex = 10;
@@ -305,7 +280,7 @@
             // wtThresholdChk
             // 
             this.wtThresholdChk.AutoSize = true;
-            this.wtThresholdChk.Location = new System.Drawing.Point(19, 105);
+            this.wtThresholdChk.Location = new System.Drawing.Point(464, 629);
             this.wtThresholdChk.Name = "wtThresholdChk";
             this.wtThresholdChk.Size = new System.Drawing.Size(101, 17);
             this.wtThresholdChk.TabIndex = 7;
@@ -316,7 +291,7 @@
             // contrastChk
             // 
             this.contrastChk.AutoSize = true;
-            this.contrastChk.Location = new System.Drawing.Point(19, 82);
+            this.contrastChk.Location = new System.Drawing.Point(6, 29);
             this.contrastChk.Name = "contrastChk";
             this.contrastChk.Size = new System.Drawing.Size(65, 17);
             this.contrastChk.TabIndex = 8;
@@ -327,7 +302,7 @@
             // enhanceChk
             // 
             this.enhanceChk.AutoSize = true;
-            this.enhanceChk.Location = new System.Drawing.Point(19, 59);
+            this.enhanceChk.Location = new System.Drawing.Point(6, 6);
             this.enhanceChk.Name = "enhanceChk";
             this.enhanceChk.Size = new System.Drawing.Size(69, 17);
             this.enhanceChk.TabIndex = 0;
@@ -338,43 +313,99 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.invertChk);
+            this.panel1.Controls.Add(this.medianInt);
             this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Controls.Add(this.despeckleChk);
+            this.panel1.Controls.Add(this.medianChk);
             this.panel1.Controls.Add(this.pictureBox2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.button2);
+            this.panel1.Controls.Add(this.wtThresholdChk);
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.wtThresInt);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(852, 861);
             this.panel1.TabIndex = 8;
             // 
-            // textBox1
+            // imageRenderSettings
             // 
-            this.textBox1.Location = new System.Drawing.Point(182, 56);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 23;
+            this.imageRenderSettings.Controls.Add(this.GeneralTab);
+            this.imageRenderSettings.Controls.Add(this.EnhanceTab);
+            this.imageRenderSettings.Location = new System.Drawing.Point(903, 500);
+            this.imageRenderSettings.Name = "imageRenderSettings";
+            this.imageRenderSettings.SelectedIndex = 0;
+            this.imageRenderSettings.Size = new System.Drawing.Size(685, 373);
+            this.imageRenderSettings.TabIndex = 9;
+            // 
+            // GeneralTab
+            // 
+            this.GeneralTab.Controls.Add(this.autoGammaChk);
+            this.GeneralTab.Controls.Add(this.contrastChk);
+            this.GeneralTab.Controls.Add(this.autoLevelChk);
+            this.GeneralTab.Controls.Add(this.autoOrientChk);
+            this.GeneralTab.Location = new System.Drawing.Point(4, 22);
+            this.GeneralTab.Name = "GeneralTab";
+            this.GeneralTab.Padding = new System.Windows.Forms.Padding(3);
+            this.GeneralTab.Size = new System.Drawing.Size(677, 347);
+            this.GeneralTab.TabIndex = 0;
+            this.GeneralTab.Text = "General";
+            this.GeneralTab.UseVisualStyleBackColor = true;
+            // 
+            // EnhanceTab
+            // 
+            this.EnhanceTab.Controls.Add(this.UnsharpmaskChk);
+            this.EnhanceTab.Controls.Add(this.enhanceChk);
+            this.EnhanceTab.Controls.Add(this.sharpenChk);
+            this.EnhanceTab.Controls.Add(this.sharpenIntY);
+            this.EnhanceTab.Controls.Add(this.sharpenIntX);
+            this.EnhanceTab.Controls.Add(this.label4);
+            this.EnhanceTab.Controls.Add(this.label5);
+            this.EnhanceTab.Location = new System.Drawing.Point(4, 22);
+            this.EnhanceTab.Name = "EnhanceTab";
+            this.EnhanceTab.Padding = new System.Windows.Forms.Padding(3);
+            this.EnhanceTab.Size = new System.Drawing.Size(677, 347);
+            this.EnhanceTab.TabIndex = 1;
+            this.EnhanceTab.Text = "Enhance";
+            this.EnhanceTab.UseVisualStyleBackColor = true;
+            // 
+            // UnsharpmaskChk
+            // 
+            this.UnsharpmaskChk.AutoSize = true;
+            this.UnsharpmaskChk.Location = new System.Drawing.Point(9, 93);
+            this.UnsharpmaskChk.Name = "UnsharpmaskChk";
+            this.UnsharpmaskChk.Size = new System.Drawing.Size(93, 17);
+            this.UnsharpmaskChk.TabIndex = 17;
+            this.UnsharpmaskChk.Text = "UnSharpmask";
+            this.UnsharpmaskChk.UseVisualStyleBackColor = true;
+            this.UnsharpmaskChk.CheckedChanged += new System.EventHandler(this.checkBoxes_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1600, 885);
+            this.Controls.Add(this.imageRenderSettings);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.optionsPanel);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.richTextBox1);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.optionsPanel.ResumeLayout(false);
-            this.optionsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.medianInt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sharpenIntY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sharpenIntX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.wtThresInt)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.imageRenderSettings.ResumeLayout(false);
+            this.GeneralTab.ResumeLayout(false);
+            this.GeneralTab.PerformLayout();
+            this.EnhanceTab.ResumeLayout(false);
+            this.EnhanceTab.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -389,7 +420,6 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox autoGammaChk;
-        private System.Windows.Forms.GroupBox optionsPanel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
@@ -408,7 +438,10 @@
         private System.Windows.Forms.CheckBox invertChk;
         private System.Windows.Forms.CheckBox medianChk;
         private System.Windows.Forms.NumericUpDown medianInt;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TabControl imageRenderSettings;
+        private System.Windows.Forms.TabPage GeneralTab;
+        private System.Windows.Forms.TabPage EnhanceTab;
+        private System.Windows.Forms.CheckBox UnsharpmaskChk;
     }
 }
 
